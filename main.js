@@ -163,35 +163,73 @@ const body=document.body;
 const fa_moon=document.getElementById("fa-moon");
 const navbar=document.getElementById("navbar")
 
+// pin The Dark Mode before page load
+const saveTheam =localStorage.getItem("theam")
+const TheamIcone =localStorage.getItem("icone")
+
+// Solution one
+fa_moon.classList.remove("fa-moon", "fa-sun");
+
+if (saveTheam === "dark") {
+    body.classList.add("dark");
+    fa_moon.classList.add("fa-sun");
+} else {
+    body.classList.add("light");
+    fa_moon.classList.add("fa-moon");
+}
+
+
+// Solution Two
+
+// if (saveTheam) {
+//     body.classList.add(saveTheam)
+// }else{
+//     body.classList.add("light")
+// }
+
+
+// fa_moon.classList.remove("fa-moon", "fa-sun");
+
+// if (TheamIcone) {
+//     fa_moon.classList.add(TheamIcone)
+// }else{
+//     fa_moon.classList.add("fa-moon")
+// }
+
+
 fa_moon.addEventListener("click" , function(){
     if (body.classList.contains("light")) {
         body.classList.replace("light" , "dark")
         fa_moon.classList.replace("fa-moon","fa-sun")
+        localStorage.setItem("theam" , "dark")
+        localStorage.setItem("icone" , "fa-sun")
     }else{
         body.classList.replace("dark" , "light")
         fa_moon.classList.replace("fa-sun","fa-moon")
+        localStorage.setItem("theam" , "light")
+        localStorage.setItem("icone" , "fa-moon")
     }
 })
 
 
+// // The Message
+// const overlay=document.getElementById("overlay");
+// const close=document.getElementById("close");
+// const Exploration=document.getElementById("Exploration");
 
-const overlay=document.getElementById("overlay");
-const close=document.getElementById("close");
-const Exploration=document.getElementById("Exploration");
+// window.addEventListener("load" , function(){
+//     setTimeout(() => {
+//         overlay.classList.add("active")
+//     }, 1000);
+// })
 
-window.addEventListener("load" , function(){
-    setTimeout(() => {
-        overlay.classList.add("active")
-    }, 1000);
-})
+// close.addEventListener("click" , function(){
+//     overlay.classList.remove("active")
+// })
 
-close.addEventListener("click" , function(){
-    overlay.classList.remove("active")
-})
-
-Exploration.addEventListener("click" , function(){
-    overlay.classList.remove("active")
-})
+// Exploration.addEventListener("click" , function(){
+//     overlay.classList.remove("active")
+// })
 
 
 
@@ -282,6 +320,17 @@ const searchInput=document.getElementById("searchInput")
 const categoryFilter=document.getElementById("categoryFilter")
 const sortFilter=document.getElementById("sortFilter")
 
+// save the filter before page load
+const savedCategoryActive =localStorage.getItem("SavedCategory")
+if (savedCategoryActive) {
+    categoryFilter.value = savedCategoryActive;
+}
+
+const savedSortActive = localStorage.getItem("savedSort")
+if (savedSortActive) {
+     sortFilter.value =savedSortActive;
+}
+
 
 function filterAndSortProducts() {
 let filterProducts = products;
@@ -292,15 +341,20 @@ filterProducts = filterProducts.filter((product) =>
 product.title.toLowerCase().includes(searchValue)
 );
 
+
+
 const selectedCategory=categoryFilter.value
+localStorage.setItem("SavedCategory" , selectedCategory)
 if (selectedCategory !== "all") {
-    filterProducts.filterProducts.filter(
+    filterProducts=filterProducts.filter(
         (product) => product.category == selectedCategory
     );
 }
 
 
+
 const sortValue = sortFilter.value;
+localStorage.setItem("savedSort" ,sortValue)
 if (sortValue === "price-asc") {
     filterProducts.sort((a , b) => a.price - b.price );
 } else if (sortValue === "price-desc"){
